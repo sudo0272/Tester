@@ -116,14 +116,15 @@ say "\n";
 
 my $i = 0;
 do {
-    say "-----TESTCASE-".($i + 1)."-----\n";
+    say "----- TESTCASE ".($i + 1)." -----\n";
 
     my $start = Time::HiRes::gettimeofday();
     system "$program $argument < $inputDirectory/$input";
+    my $exitCode = $? >> 8;
     my $end = Time::HiRes::gettimeofday();
     print "\n\n";
 
-    say "==== ", int(($end - $start) * 1000), "ms spent ====\n";
+    say "==== ", int(($end - $start) * 1000), "ms with $exitCode ====\n\n";
 
     $i++;
 } while (($fixedArgument or (defined($argument = <ARGUMENT>) and chomp $argument)) and ($fixedInput or $input = $inputFiles[$i]));
