@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use feature qw (say);
+use Time::HiRes qw (time);
 
 sub getFileContent {
     open INPUT, $_[0];
@@ -117,12 +118,12 @@ my $i = 0;
 do {
     say "-----TESTCASE-".($i + 1)."-----\n";
 
-    my $start = time;
+    my $start = Time::HiRes::gettimeofday();
     system "$program $argument < $inputDirectory/$input";
-    my $end = time;
+    my $end = Time::HiRes::gettimeofday();
     print "\n\n";
 
-    say "==== ", $end - $start, "ms spent ====\n";
+    say "==== ", int(($end - $start) * 1000), "ms spent ====\n";
 
     $i++;
 } while (($fixedArgument or (defined($argument = <ARGUMENT>) and chomp $argument)) and ($fixedInput or $input = $inputFiles[$i]));
